@@ -103,13 +103,14 @@ class MemberOnlyArticle(Resource):
         if not session.get('user_id'):
             return {"error": "Unauthorized"}, 401
 
-        # Find the article and ensure it's member-only
-        article = Article.query.filter_by(id=id, is_member_only=True).first()
+        # Just fetch the article by ID
+        article = Article.query.filter_by(id=id).first()
 
         if not article:
-            return {"error": "Article not found or not member-only"}, 404
+            return {"error": "Article not found"}, 404
 
         return article.to_dict(), 200
+
 
 
 api.add_resource(ClearSession, '/clear', endpoint='clear')
